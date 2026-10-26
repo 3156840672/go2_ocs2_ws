@@ -47,7 +47,7 @@
 主工作空间：
 
 ```text
-/home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+~/go2_ocs2_ws/verified_humble_ws
 ```
 
 | 路径 | 作用 |
@@ -66,12 +66,21 @@
 
 ## 3. 第一次编译
 
-### 3.1 打开干净终端
+### 3.1 首次准备依赖
 
-打开一个新的终端，执行：
+克隆仓库后，先在仓库根目录执行一次：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws
+./scripts/bootstrap_humble.sh
+```
+
+脚本会在 `.dependencies/ocs2_ws` 中检出 `dependencies.repos` 固定的 OCS2 版本、初始化子模块、安装 rosdep 依赖，再依次编译 OCS2 underlay 和当前项目。它不会把依赖源码或编译产物提交到 Git。
+
+准备完成后打开一个新终端：
+
+```bash
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ```
 
@@ -80,33 +89,27 @@ source env.sh
 ```bash
 echo $ROS_DISTRO
 echo $ROS_DOMAIN_ID
+echo $OCS2_UNDERLAY
 ros2 pkg prefix ocs2_quadruped_controller
 ```
 
-预期：
+预期分别是 Humble、域 ID 42、仓库内 OCS2 underlay，以及当前工作空间中的控制器。已有其他兼容 OCS2 安装时，可以在 `source env.sh` 前设置：
 
-```text
-humble
-42
-/home/yue/Desktop/go2_ocs2_ws/verified_humble_ws/install/ocs2_quadruped_controller
+```bash
+export OCS2_UNDERLAY=/path/to/ocs2_ws/install
 ```
 
-### 3.2 编译全部十个包
+### 3.2 修改源码后重新编译
 
 ```bash
 MAKEFLAGS=-j2 colcon build --base-paths src \
-  --executor sequential \
-  --symlink-install \
+  --packages-up-to joystick_input ocs2_quadruped_controller verified_go2_mujoco \
+  --executor sequential --symlink-install \
   --cmake-args -DCMAKE_BUILD_TYPE=Release
-```
-
-编译成功后重新加载环境：
-
-```bash
 source env.sh
 ```
 
-以后只修改单个包时可以缩短编译时间。例如：
+只修改单个包时可以缩短编译时间。例如：
 
 ```bash
 colcon build --packages-select mujoco_ros2_control \
@@ -115,12 +118,23 @@ colcon build --packages-select mujoco_ros2_control \
 source env.sh
 ```
 
+### 3.3 首次生成 CppAD 动力学库
+
+CppAD 生成物与机器和模型相关，因此不提交到 Git。第一次安装或修改 URDF/动力学后执行：
+
+```bash
+ros2 launch verified_go2_mujoco sim.launch.py \
+  headless:=true rviz:=false recompile_cppad:=true
+```
+
+等待终端出现 `MRT initialized. MPC thread started.`，然后按 `Ctrl+C`。动态库默认保存在 `~/ocs2_cpp_ad/go2`；可以在 `source env.sh` 前通过 `GO2_CPPAD_MODEL_DIR` 指定其他目录。日常运行不再打开 `recompile_cppad`。
+
 ## 4. 第一次启动：使用键盘
 
 ### 4.1 终端 A：启动仿真、OCS2 和 RViz
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 launch verified_go2_mujoco sim.launch.py
 ```
@@ -149,7 +163,7 @@ Configured and activated ocs2_quadruped_controller
 ### 4.2 终端 B：启动键盘节点
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 run keyboard_input keyboard_input
 ```
@@ -208,7 +222,7 @@ ls /dev/input/js*
 假设设备为 `/dev/input/js0`，直接启动：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 launch verified_go2_mujoco sim.launch.py joystick:=true
 ```
@@ -402,7 +416,7 @@ stance 下未来落足点为空或数量很少是正常的；切换到 trot 后�
 新开终端并加载环境：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ```
 

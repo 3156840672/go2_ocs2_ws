@@ -78,6 +78,18 @@ namespace ocs2::legged_robot
         // load setting from loading file
         model_settings_ = loadModelSettings(task_file, "model_settings", verbose);
 
+        if (const char* cppadModelDir = std::getenv("GO2_CPPAD_MODEL_DIR");
+            cppadModelDir != nullptr && cppadModelDir[0] != '\0')
+        {
+            model_settings_.modelFolderCppAd = cppadModelDir;
+        }
+        if (const char* recompileCppAd = std::getenv("GO2_RECOMPILE_CPPAD");
+            recompileCppAd != nullptr)
+        {
+            const std::string value(recompileCppAd);
+            model_settings_.recompileLibrariesCppAd = value == "1" || value == "true" || value == "TRUE";
+        }
+
         // If modelFolderCppAd doesn't start with "/", prepend home directory
         if (!model_settings_.modelFolderCppAd.empty() && model_settings_.modelFolderCppAd.front() != '/')
         {

@@ -105,6 +105,7 @@ target_include_directories(mujoco_ros2_control
 install(TARGETS
   mujoco_ros2_control
   DESTINATION lib/${PROJECT_NAME})
+install(FILES LICENSE DESTINATION share/${PROJECT_NAME})
 
 pluginlib_export_plugin_description_file(mujoco_ros2_control mujoco_system_plugins.xml)
 if(BUILD_TESTING)

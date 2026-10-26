@@ -3,7 +3,7 @@
 <package format="3">
     <name>control_input_msgs</name>
     <version>0.0.0</version>
-    <description>TODO: Package description</description>
+    <description>Shared command and gait input messages for the quadruped controller.</description>
     <maintainer email="biao876990970@hotmail.com">biao</maintainer>
     <license>Apache-2.0</license>
 

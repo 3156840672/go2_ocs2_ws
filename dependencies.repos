@@ -1,0 +1,6 @@
+repositories:
+  ocs2_ros2:
+    type: git
+    url: https://github.com/legubiao/ocs2_ros2.git
+    version: cd23b0c3fd131aa3eed12d77371c7ac9a5a38828
+

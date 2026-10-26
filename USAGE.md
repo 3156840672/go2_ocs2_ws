@@ -4,7 +4,7 @@
 
 ## 1. 工程组成
 
-主工作空间是 `/home/yue/Desktop/go2_ocs2_ws/verified_humble_ws`。
+主工作空间是仓库中的 `verified_humble_ws`。下文命令默认先进入仓库根目录。
 
 | 目录 | 作用 |
 | --- | --- |
@@ -13,30 +13,44 @@
 | `src/verified_go2_mujoco` | 本项目 Go2 MJCF、OCS2 RViz 配置和统一启动文件 |
 | `src/mujoco_ros2_control` | 默认进程内 MuJoCo 到 ros2_control 的 C++ 硬件桥 |
 
-`env.sh`依次加载 `/opt/ros/humble`、`/home/yue/ros2_ws/install` 中已编译的 Humble OCS2 底层库，以及当前工作空间。默认模型是当前工程的 `src/verified_go2_mujoco/mjcf/scene.xml`，仿真和 ros2_control 在同一 C++ 进程中运行，不依赖 `/home/yue/unitree_mujoco` 或 Unitree DDS。整个链路都是本机 Humble，不经过 Docker。
+`env.sh`依次加载 `/opt/ros/humble`、仓库内 `.dependencies/ocs2_ws/install` 的 OCS2 underlay，以及当前工作空间。也可以通过 `OCS2_UNDERLAY=/其他路径/install` 使用已有 OCS2。默认模型是当前工程的 `src/verified_go2_mujoco/mjcf/scene.xml`，仿真和 ros2_control 在同一 C++ 进程中运行，不依赖 Unitree DDS。
 
 ## 2. 编译
 
-打开一个新的终端：
+首次克隆后先在仓库根目录执行：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+./scripts/bootstrap_humble.sh
+```
+
+该脚本按照 `dependencies.repos` 中固定的版本构建 OCS2 underlay，然后编译当前工作空间。以后修改本项目源码时，打开新终端执行：
+
+```bash
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 MAKEFLAGS=-j2 colcon build --base-paths src \
   --packages-up-to joystick_input ocs2_quadruped_controller verified_go2_mujoco \
+  --symlink-install \
   --executor sequential \
   --cmake-args -DCMAKE_BUILD_TYPE=Release
 source env.sh
 ```
 
-首次完整编译需要几分钟。qpOASES 复用 underlay 中已经验证的版本，不会在本项目内重新下载。CppAD 模型库位于 `~/ocs2_cpp_ad/go2`；本机已有这些库，启动时会直接加载。
+qpOASES 由本项目的 `qpoases_colcon` 包从固定提交构建。CppAD 模型库默认位于 `~/ocs2_cpp_ad/go2`，不会提交到 Git。首次安装或修改机器人动力学后执行：
+
+```bash
+ros2 launch verified_go2_mujoco sim.launch.py \
+  headless:=true rviz:=false recompile_cppad:=true
+```
+
+看到 `MRT initialized. MPC thread started.` 后按 `Ctrl+C`，之后按普通方式启动。可用 `GO2_CPPAD_MODEL_DIR` 修改生成目录。
 
 ## 3. 启动
 
 终端 A：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 launch verified_go2_mujoco sim.launch.py
 ```
@@ -69,7 +83,7 @@ RViz 默认显示：
 终端 B：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 run keyboard_input keyboard_input
 ```
@@ -107,7 +121,7 @@ ros2 run keyboard_input keyboard_input
 键盘和手柄节点不要同时运行。先把手柄接到 `/dev/input/js0`，然后在终端 A 直接启动仿真和手柄：
 
 ```bash
-cd /home/yue/Desktop/go2_ocs2_ws/verified_humble_ws
+cd ~/go2_ocs2_ws/verified_humble_ws
 source env.sh
 ros2 launch verified_go2_mujoco sim.launch.py joystick:=true
 ```
@@ -185,7 +199,7 @@ ros2 topic info /tf --verbose --no-daemon
 - **松开 W 仍继续走：**这是增量保持输入，按空格清零，再按 `2` 回 stance。
 - **启动后机器人趴下：**这是预期行为。启动状态是 passive，仿真仍受重力作用；等控制器加载完成后按 `2`，机器人会从趴姿进入 stance。
 - **切换 trot 后翻倒：**先确认自有 MJCF 的足端碰撞几何及 ros2_control 接口都按 OCS2 顺序 `FL/FR/RL/RR` 映射，再检查摩擦、质量、惯量和初始关节角是否与 OCS2 的 URDF/参数一致。
-- **找不到手柄：**运行 `ls /dev/input/js*`；如果实际是 `js1`，启动时增加 `joy_device:=/dev/input/js1`。当前机器验收时没有连接真实手柄，但已用合成 `sensor_msgs/Joy` 验证完整映射节点。
+- **找不到手柄：**运行 `ls /dev/input/js*`；如果实际是 `js1`，启动时增加 `joy_device:=/dev/input/js1`。G30S TE 的 LT 既有按钮值也有轴值，当前映射使用按钮 `8`，并已加入摇杆回中解锁保护。
 - **RViz 只有模型：**必须使用 `verified_go2_mujoco/config/go2.rviz`，Fixed Frame 为 `odom`，并检查 `/legged_robot/optimizedStateTrajectory` 和 `/legged_robot/currentState`。
 - **RViz 模型闪烁：**先结束所有旧的 launch，再重新 `source env.sh` 启动。运行 `ros2 topic info /tf --verbose --no-daemon`，发布者应只有 `ocs2_quadruped_controller` 和 `robot_state_publisher`；出现 `mujoco_ros2_control_node` 或重复节点说明旧进程仍在发布冲突 TF。
 - **没有未来落足点：**stance 下 `Future footholds` 为空是正常的；切换到 trot 后才会出现。

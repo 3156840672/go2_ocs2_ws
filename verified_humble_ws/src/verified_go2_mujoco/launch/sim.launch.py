@@ -37,6 +37,9 @@ def generate_launch_description():
                 'headless': LaunchConfiguration('headless'),
             },
         ],
+        additional_env={
+            'GO2_RECOMPILE_CPPAD': LaunchConfiguration('recompile_cppad'),
+        },
     )
     publisher = Node(
         package='robot_state_publisher',
@@ -94,6 +97,9 @@ def generate_launch_description():
         DeclareLaunchArgument('headless', default_value='false'),
         DeclareLaunchArgument('rviz', default_value='true'),
         DeclareLaunchArgument('joystick', default_value='false'),
+        DeclareLaunchArgument(
+            'recompile_cppad', default_value='false',
+            description='Regenerate OCS2 CppAD libraries before starting MPC.'),
         DeclareLaunchArgument('joy_device', default_value='/dev/input/js0'),
         DeclareLaunchArgument('joy_deadzone', default_value='0.08'),
         simulator, publisher, rviz, joy, joystick_input, joints,

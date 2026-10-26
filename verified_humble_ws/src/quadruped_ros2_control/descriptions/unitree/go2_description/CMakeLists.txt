@@ -7,5 +7,6 @@ install(
 		DIRECTORY meshes xacro launch config urdf
 		DESTINATION share/${PROJECT_NAME}/
 )
+install(FILES LICENSE DESTINATION share/${PROJECT_NAME})
 
 ament_package()

@@ -3,4 +3,9 @@ install/
 log/
 tmp/
 __pycache__/
+*.py[cod]
+.dependencies/
+ocs2_cpp_ad/
+.cache/
+.idea/
 
