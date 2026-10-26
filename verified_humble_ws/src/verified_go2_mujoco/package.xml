@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>verified_go2_mujoco</name>
+  <version>0.1.0</version>
+  <description>MuJoCo launch adapter for the Humble Go2 OCS2 controller.</description>
+  <maintainer email="yue@example.com">yue</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>go2_description</exec_depend>
+  <exec_depend>ocs2_quadruped_controller</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>mujoco_ros2_control</exec_depend>
+  <exec_depend>keyboard_input</exec_depend>
+  <exec_depend>joystick_input</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

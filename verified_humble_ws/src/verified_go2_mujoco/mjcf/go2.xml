@@ -1,0 +1,150 @@
+<mujoco model="verified_go2">
+  <compiler angle="radian" meshdir="assets" autolimits="true" />
+  <option timestep="0.001" cone="elliptic" impratio="100" />
+  <default>
+    <geom friction="0.4" condim="1" margin="0.001" />
+    <joint armature="0.01" frictionloss="0.2" />
+    <default class="visual">
+      <geom type="mesh" contype="0" conaffinity="0" group="2" />
+    </default>
+  </default>
+  <asset>
+    <material name="metal" rgba=".9 .95 .95 1" />
+    <material name="black" rgba="0 0 0 1" />
+    <material name="white" rgba="1 1 1 1" />
+    <material name="gray" rgba="0.671705 0.692426 0.774270 1" />
+    <mesh file="base_0.obj" />
+    <mesh file="base_1.obj" />
+    <mesh file="base_2.obj" />
+    <mesh file="base_3.obj" />
+    <mesh file="base_4.obj" />
+    <mesh file="hip_0.obj" />
+    <mesh file="hip_1.obj" />
+    <mesh file="thigh_0.obj" />
+    <mesh file="thigh_1.obj" />
+    <mesh file="thigh_mirror_0.obj" />
+    <mesh file="thigh_mirror_1.obj" />
+    <mesh file="calf_0.obj" />
+    <mesh file="calf_1.obj" />
+    <mesh file="calf_mirror_0.obj" />
+    <mesh file="calf_mirror_1.obj" />
+    <mesh file="foot.obj" />
+  </asset>
+  <worldbody>
+    <body name="base_link" pos="0 0 0" quat="1 0 0 0">
+      <freejoint name="root" />
+      <inertial mass="6.922000000000001" pos="0.021108950014446678 0 -0.0053652247905229666" fullinertia="0.024580028789796229 0.098177474441948936 0.10710044565215271 0.00012166 0.0014850132706257775 -3.1199999999999999e-05" />
+      <geom mesh="base_0" material="black" class="visual" />
+      <geom mesh="base_1" material="black" class="visual" />
+      <geom mesh="base_2" material="black" class="visual" />
+      <geom mesh="base_3" material="white" class="visual" />
+      <geom mesh="base_4" material="gray" class="visual" />
+      <body name="FL_hip" pos="0.19339999999999999 0.0465 0" quat="1 0 0 0">
+        <joint name="FL_hip_joint" type="hinge" axis="1 0 0" range="-1.0472 1.0472" damping="0.1" />
+        <inertial mass="0.678" pos="-0.0054000000000000003 0.0019400000000000001 -0.000105" fullinertia="0.00048000000000000001 0.00088400000000000002 0.00059599999999999996 -3.01e-06 1.11e-06 -1.42e-06" />
+        <geom mesh="hip_0" material="metal" class="visual" />
+        <geom mesh="hip_1" material="gray" class="visual" />
+        <body name="FL_thigh" pos="0 0.095500000000000002 0" quat="1 0 0 0">
+          <joint name="FL_thigh_joint" type="hinge" axis="0 1 0" range="-1.5708 3.4907" damping="0.1" />
+          <inertial mass="1.152" pos="-0.0037399999999999998 -0.0223 -0.0327" fullinertia="0.0058399999999999997 0.0057999999999999996 0.0010300000000000001 8.7200000000000005e-05 -0.00028899999999999998 0.00080800000000000002" />
+          <geom mesh="thigh_0" material="metal" class="visual" />
+          <geom mesh="thigh_1" material="gray" class="visual" />
+          <body name="FL_calf" pos="0 0 -0.21299999999999999" quat="1 0 0 0">
+            <joint name="FL_calf_joint" type="hinge" axis="0 1 0" range="-2.7227 -0.83776" damping="0.1" />
+            <inertial mass="0.214" pos="0.0039435514018691586 -0.00070163551401869148 -0.14247663551401868" fullinertia="0.0015043184288551401 0.0015255740228785047 4.3837685378504676e-05 5.7069775700934575e-07 -5.9880822429906474e-06 1.2405616822429905e-05" />
+            <geom mesh="calf_0" material="gray" class="visual" />
+            <geom mesh="calf_1" material="black" class="visual" />
+            <geom pos="0 0 -0.213" mesh="foot" class="visual" material="black" />
+            <geom name="FL_calf_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.0080000000000000002 0.0080000000000000002" />
+            <geom name="FL" pos="0 0 -0.21299999999999999" quat="1 0 0 0" group="3" priority="1" condim="6" friction="0.4 0.02 0.01" type="sphere" size="0.02" />
+          </body>
+          <geom name="FL_thigh_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.01225 0.017000000000000001" />
+        </body>
+        <geom name="FL_hip_0" pos="0 0.095500000000000002 0" quat="0.70710678118654757 0.70710678118654746 0 0" group="3" type="cylinder" size="0.046 0.02" />
+      </body>
+      <body name="FR_hip" pos="0.19339999999999999 -0.0465 0" quat="1 0 0 0">
+        <joint name="FR_hip_joint" type="hinge" axis="1 0 0" range="-1.0472 1.0472" damping="0.1" />
+        <inertial mass="0.678" pos="-0.0054000000000000003 -0.0019400000000000001 -0.000105" fullinertia="0.00048000000000000001 0.00088400000000000002 0.00059599999999999996 3.01e-06 1.11e-06 1.42e-06" />
+        <geom mesh="hip_0" material="metal" class="visual" quat="4.63268e-05 1 0 0" />
+        <geom mesh="hip_1" material="gray" class="visual" quat="4.63268e-05 1 0 0" />
+        <body name="FR_thigh" pos="0 -0.095500000000000002 0" quat="1 0 0 0">
+          <joint name="FR_thigh_joint" type="hinge" axis="0 1 0" range="-1.5708 3.4907" damping="0.1" />
+          <inertial mass="1.152" pos="-0.0037399999999999998 0.0223 -0.0327" fullinertia="0.0058399999999999997 0.0057999999999999996 0.0010300000000000001 -8.7200000000000005e-05 -0.00028899999999999998 -0.00080800000000000002" />
+          <geom mesh="thigh_mirror_0" material="metal" class="visual" />
+          <geom mesh="thigh_mirror_1" material="gray" class="visual" />
+          <body name="FR_calf" pos="0 0 -0.21299999999999999" quat="1 0 0 0">
+            <joint name="FR_calf_joint" type="hinge" axis="0 1 0" range="-2.7227 -0.83776" damping="0.1" />
+            <inertial mass="0.214" pos="0.0039435514018691586 -0.00070163551401869148 -0.14247663551401868" fullinertia="0.0015043184288551401 0.0015255740228785047 4.3837685378504676e-05 5.7069775700934575e-07 -5.9880822429906474e-06 1.2405616822429905e-05" />
+            <geom mesh="calf_mirror_0" material="gray" class="visual" />
+            <geom mesh="calf_mirror_1" material="black" class="visual" />
+            <geom pos="0 0 -0.213" mesh="foot" class="visual" material="black" />
+            <geom name="FR_calf_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.0080000000000000002 0.0080000000000000002" />
+            <geom name="FR" pos="0 0 -0.21299999999999999" quat="1 0 0 0" group="3" priority="1" condim="6" friction="0.4 0.02 0.01" type="sphere" size="0.02" />
+          </body>
+          <geom name="FR_thigh_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.01225 0.017000000000000001" />
+        </body>
+        <geom name="FR_hip_0" pos="0 -0.095500000000000002 0" quat="0.70710678118654757 0.70710678118654746 0 0" group="3" type="cylinder" size="0.046 0.02" />
+      </body>
+      <body name="RL_hip" pos="-0.19339999999999999 0.0465 0" quat="1 0 0 0">
+        <joint name="RL_hip_joint" type="hinge" axis="1 0 0" range="-1.0472 1.0472" damping="0.1" />
+        <inertial mass="0.678" pos="0.0054000000000000003 0.0019400000000000001 -0.000105" fullinertia="0.00048000000000000001 0.00088400000000000002 0.00059599999999999996 3.01e-06 -1.11e-06 -1.42e-06" />
+        <geom mesh="hip_0" material="metal" class="visual" quat="4.63268e-05 0 1 0" />
+        <geom mesh="hip_1" material="gray" class="visual" quat="4.63268e-05 0 1 0" />
+        <body name="RL_thigh" pos="0 0.095500000000000002 0" quat="1 0 0 0">
+          <joint name="RL_thigh_joint" type="hinge" axis="0 1 0" range="-1.5708 3.4907" damping="0.1" />
+          <inertial mass="1.152" pos="-0.0037399999999999998 -0.0223 -0.0327" fullinertia="0.0058399999999999997 0.0057999999999999996 0.0010300000000000001 8.7200000000000005e-05 -0.00028899999999999998 0.00080800000000000002" />
+          <geom mesh="thigh_0" material="metal" class="visual" />
+          <geom mesh="thigh_1" material="gray" class="visual" />
+          <body name="RL_calf" pos="0 0 -0.21299999999999999" quat="1 0 0 0">
+            <joint name="RL_calf_joint" type="hinge" axis="0 1 0" range="-2.7227 -0.83776" damping="0.1" />
+            <inertial mass="0.214" pos="0.0039435514018691586 -0.00070163551401869148 -0.14247663551401868" fullinertia="0.0015043184288551401 0.0015255740228785047 4.3837685378504676e-05 5.7069775700934575e-07 -5.9880822429906474e-06 1.2405616822429905e-05" />
+            <geom mesh="calf_0" material="gray" class="visual" />
+            <geom mesh="calf_1" material="black" class="visual" />
+            <geom pos="0 0 -0.213" mesh="foot" class="visual" material="black" />
+            <geom name="RL_calf_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.0080000000000000002 0.0080000000000000002" />
+            <geom name="RL" pos="0 0 -0.21299999999999999" quat="1 0 0 0" group="3" priority="1" condim="6" friction="0.4 0.02 0.01" type="sphere" size="0.02" />
+          </body>
+          <geom name="RL_thigh_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.01225 0.017000000000000001" />
+        </body>
+        <geom name="RL_hip_0" pos="0 0.095500000000000002 0" quat="0.70710678118654757 0.70710678118654746 0 0" group="3" type="cylinder" size="0.046 0.02" />
+      </body>
+      <body name="RR_hip" pos="-0.19339999999999999 -0.0465 0" quat="1 0 0 0">
+        <joint name="RR_hip_joint" type="hinge" axis="1 0 0" range="-1.0472 1.0472" damping="0.1" />
+        <inertial mass="0.678" pos="0.0054000000000000003 -0.0019400000000000001 -0.000105" fullinertia="0.00048000000000000001 0.00088400000000000002 0.00059599999999999996 -3.01e-06 -1.11e-06 1.42e-06" />
+        <geom mesh="hip_0" material="metal" class="visual" quat="2.14617e-09 4.63268e-05 4.63268e-05 -1" />
+        <geom mesh="hip_1" material="gray" class="visual" quat="2.14617e-09 4.63268e-05 4.63268e-05 -1" />
+        <body name="RR_thigh" pos="0 -0.095500000000000002 0" quat="1 0 0 0">
+          <joint name="RR_thigh_joint" type="hinge" axis="0 1 0" range="-1.5708 3.4907" damping="0.1" />
+          <inertial mass="1.152" pos="-0.0037399999999999998 0.0223 -0.0327" fullinertia="0.0058399999999999997 0.0057999999999999996 0.0010300000000000001 -8.7200000000000005e-05 -0.00028899999999999998 -0.00080800000000000002" />
+          <geom mesh="thigh_mirror_0" material="metal" class="visual" />
+          <geom mesh="thigh_mirror_1" material="gray" class="visual" />
+          <body name="RR_calf" pos="0 0 -0.21299999999999999" quat="1 0 0 0">
+            <joint name="RR_calf_joint" type="hinge" axis="0 1 0" range="-2.7227 -0.83776" damping="0.1" />
+            <inertial mass="0.214" pos="0.0039435514018691586 -0.00070163551401869148 -0.14247663551401868" fullinertia="0.0015043184288551401 0.0015255740228785047 4.3837685378504676e-05 5.7069775700934575e-07 -5.9880822429906474e-06 1.2405616822429905e-05" />
+            <geom mesh="calf_mirror_0" material="gray" class="visual" />
+            <geom mesh="calf_mirror_1" material="black" class="visual" />
+            <geom pos="0 0 -0.213" mesh="foot" class="visual" material="black" />
+            <geom name="RR_calf_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.0080000000000000002 0.0080000000000000002" />
+            <geom name="RR" pos="0 0 -0.21299999999999999" quat="1 0 0 0" group="3" priority="1" condim="6" friction="0.4 0.02 0.01" type="sphere" size="0.02" />
+          </body>
+          <geom name="RR_thigh_0" pos="0 0 -0.1065" quat="0.70710678118654757 0 0.70710678118654746 0" group="3" type="box" size="0.1065 0.01225 0.017000000000000001" />
+        </body>
+        <geom name="RR_hip_0" pos="0 -0.095500000000000002 0" quat="0.70710678118654757 0.70710678118654746 0 0" group="3" type="cylinder" size="0.046 0.02" />
+      </body>
+      <geom name="trunk_0" pos="0 0 0" quat="1 0 0 0" group="3" type="box" size="0.18809999999999999 0.04675 0.057000000000000002" />
+      <geom name="trunk_1" pos="0 0 0" quat="1 0 0 0" group="3" type="box" size="0.094049999999999995 0.023375 0.028500000000000001" />
+      <geom name="trunk_2" pos="0.28499999999999998 0 0.01" quat="1 0 0 0" group="3" type="cylinder" size="0.045 0.025" />
+      <geom name="trunk_3" pos="0.29299999999999998 0 -0.059999999999999998" quat="1 0 0 0" group="3" type="box" size="0.0235 0.0235 0.0235" />
+      <geom name="imu_link_0" pos="0 0 0" quat="1 0 0 0" group="3" type="box" size="0.00050000000000000001 0.00050000000000000001 0.00050000000000000001" />
+      <site name="imu_sensor" pos="0 0 0" quat="1 0 0 0" size=".001" />
+    </body>
+  </worldbody>
+  <sensor>
+    <framequat name="imu_sensor_quat" objtype="site" objname="imu_sensor" />
+    <gyro name="imu_sensor_gyro" site="imu_sensor" />
+    <accelerometer name="imu_sensor_accel" site="imu_sensor" />
+  </sensor>
+  <keyframe>
+    <key name="home" qpos="0 0 0.36206387410310925 1 0 0 0 0 0.67000000000000004 -1.3 0 0.67000000000000004 -1.3 0 0.67000000000000004 -1.3 0 0.67000000000000004 -1.3" />
+  </keyframe>
+</mujoco>

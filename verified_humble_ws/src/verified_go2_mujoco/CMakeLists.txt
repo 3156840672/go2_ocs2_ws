@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.10)
+project(verified_go2_mujoco)
+find_package(ament_cmake REQUIRED)
+install(DIRECTORY launch config mjcf DESTINATION share/${PROJECT_NAME})
+ament_package()
