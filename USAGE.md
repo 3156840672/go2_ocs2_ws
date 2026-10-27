@@ -36,7 +36,7 @@ MAKEFLAGS=-j2 colcon build --base-paths src \
 source env.sh
 ```
 
-qpOASES 由本项目的 `qpoases_colcon` 包从固定提交构建。CppAD 模型库默认位于 `~/ocs2_cpp_ad/go2`，不会提交到 Git。首次安装或修改机器人动力学后执行：
+qpOASES 由本项目的 `qpoases_colcon` 包从固定提交构建。CppAD 模型库默认位于仓库根目录的 `.dependencies/cppad/go2`，不会提交到 Git。首次安装或修改机器人动力学后执行：
 
 ```bash
 ros2 launch verified_go2_mujoco sim.launch.py \

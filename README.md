@@ -82,7 +82,7 @@ ros2 launch verified_go2_mujoco sim.launch.py \
   headless:=true rviz:=false recompile_cppad:=true
 ```
 
-看到 `MRT initialized. MPC thread started.` 后按 `Ctrl+C`。生成结果默认位于 `~/ocs2_cpp_ad/go2`；可通过 `GO2_CPPAD_MODEL_DIR` 修改位置。之后正常启动时不要再设置 `recompile_cppad:=true`。
+看到 `MRT initialized. MPC thread started.` 后按 `Ctrl+C`。生成结果默认位于仓库的 `.dependencies/cppad/go2`，该目录不会提交到 Git；可通过 `GO2_CPPAD_MODEL_DIR` 修改位置。之后正常启动时不要再设置 `recompile_cppad:=true`。
 
 ## 启动
 

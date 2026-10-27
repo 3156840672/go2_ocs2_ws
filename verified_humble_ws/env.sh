@@ -36,7 +36,7 @@ if [[ -z "${MUJOCO_DIR:-}" ]]; then
 fi
 export MUJOCO_DIR="${MUJOCO_DIR:-/usr/local}"
 export LD_LIBRARY_PATH="$MUJOCO_DIR/lib:${LD_LIBRARY_PATH:-}"
-export GO2_CPPAD_MODEL_DIR="${GO2_CPPAD_MODEL_DIR:-$HOME/ocs2_cpp_ad/go2}"
+export GO2_CPPAD_MODEL_DIR="${GO2_CPPAD_MODEL_DIR:-$GO2_REPOSITORY_ROOT/.dependencies/cppad/go2}"
 export OPENBLAS_NUM_THREADS=1
 export ROS_LOCALHOST_ONLY=1
 export ROS_DOMAIN_ID="${GO2_ROS_DOMAIN_ID:-42}"
